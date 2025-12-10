@@ -1,0 +1,47 @@
+﻿syntax = "proto3";
+option csharp_namespace = "BuildingBlocks.GrpcContracts.FileStoring";
+
+package filestoring;
+
+service FileStoring {
+  rpc Upload (UploadFileRequest) returns (UploadFileResponse);
+  rpc Download (DownloadFileRequest) returns (DownloadFileResponse);
+  rpc GetMeta (GetMetaRequest) returns (GetMetaResponse);
+}
+
+message UploadFileRequest {
+  string fileName = 1;
+  string contentType = 2;
+  bytes data = 3;
+}
+
+message UploadFileResponse {
+  string fileId = 1;
+  string storageKey = 2;
+  string checksum = 3;
+  int64 size = 4;
+}
+
+message DownloadFileRequest {
+  string fileId = 1;
+}
+
+message DownloadFileResponse {
+  string fileName = 1;
+  string contentType = 2;
+  bytes data = 3;
+}
+
+message GetMetaRequest {
+  string fileId = 1;
+}
+
+message GetMetaResponse {
+  string fileId = 1;
+  string fileName = 2;
+  string contentType = 3;
+  string checksum = 4;
+  int64 size = 5;
+  string storageKey = 6;
+  string createdAtUtc = 7;
+}

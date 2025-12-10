@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<RootNamespace>FileAnalysisService.Abstractions</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\FileAnalysisService.Domain\FileAnalysisService.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,47 @@
+﻿syntax = "proto3";
+option csharp_namespace = "BuildingBlocks.GrpcContracts.FileAnalysis";
+
+package fileanalysis;
+
+service FileAnalysis {
+  rpc SubmitWork (SubmitWorkRequest) returns (SubmitWorkResponse);
+  rpc GetReports (GetReportsRequest) returns (GetReportsResponse);
+  rpc BuildWordCloud (BuildWordCloudRequest) returns (BuildWordCloudResponse);
+}
+
+message SubmitWorkRequest {
+  string studentId = 1;
+  string assignmentId = 2;
+  string fileId = 3;
+}
+
+message SubmitWorkResponse {
+  string workId = 1;
+  string status = 2;
+  bool isPlagiarism = 3;
+}
+
+message GetReportsRequest {
+  string workId = 1;
+}
+
+message ReportDto {
+  string reportId = 1;
+  string workId = 2;
+  string status = 3;
+  bool isPlagiarism = 4;
+  string details = 5;
+  string createdAtUtc = 6;
+}
+
+message GetReportsResponse {
+  repeated ReportDto reports = 1;
+}
+
+message BuildWordCloudRequest {
+  string workId = 1;
+}
+
+message BuildWordCloudResponse {
+  bytes imagePng = 1;
+}
