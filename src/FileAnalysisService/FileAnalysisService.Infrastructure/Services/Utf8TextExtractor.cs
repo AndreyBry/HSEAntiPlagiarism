@@ -13,7 +13,14 @@ public sealed class Utf8TextExtractor : ITextExtractor
         }
         catch
         {
-            return string.Empty;
+            try
+            {
+                return Encoding.Unicode.GetString(data);
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }

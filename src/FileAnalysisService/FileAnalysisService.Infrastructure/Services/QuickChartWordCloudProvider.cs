@@ -1,5 +1,9 @@
-﻿using System.Net;
-using FileAnalysisService.Abstractions.Interfaces;
+﻿using FileAnalysisService.Abstractions.Interfaces;
+using Grpc.Core;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace FileAnalysisService.Infrastructure.Services;
 
@@ -12,13 +16,24 @@ public sealed class QuickChartWordCloudProvider : IWordCloudProvider
         _http = http;
     }
 
-    public async Task<byte[]> BuildAsync(string text, CancellationToken ct)
+    public async Task<byte[]> BuildAsync(string wordList, CancellationToken ct)
     {
-        var encoded = WebUtility.UrlEncode(text);
+        var requestBody = new
+        {
+            format = "png",
+            width = 600,
+            height = 400,
+            fontScale = 15,
+            scale = "linear",
+            useWordList = true,
+            text = wordList
+        };
 
-        var url = $"https://quickchart.io/wordcloud?format=png&width=600&height=400&text={encoded}";
+        var response = await _http.PostAsync(
+            "https://quickchart.io/wordcloud",
+            new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json"),
+            ct);
 
-        using var response = await _http.GetAsync(url, ct);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadAsByteArrayAsync(ct);
